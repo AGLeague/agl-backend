@@ -1,2 +1,5 @@
 /dist
 /node_modules
+
+# Environment variables have secrets for local dev
+.env

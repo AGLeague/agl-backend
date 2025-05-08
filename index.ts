@@ -1,16 +1,16 @@
-import dotenv from "dotenv";
-import express, {Express, Request, Response} from "express";
-import path from "path";
+import express, { Express, Request, Response } from "express";
 import cors from "cors";
 
-dotenv.config();
+import playerRoutes from "./routes/players";
 
 const app: Express = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
+app.use("/api/players", playerRoutes);
+
+app.get('/', (_: Request, res: Response) => {
   res.send('A placeholder for something cool coming soon');
 });
 
