@@ -1,33 +1,38 @@
 interface PaginationLinks {
-  next?: string,
-  last?: string,
-  first?: string,
-  prev?: string,
-  self?: string,
+	next?: string;
+	last?: string;
+	first?: string;
+	prev?: string;
+	self?: string;
 }
 
-function getLinks(baseUrl: URL, page: number, size: number, count: number): PaginationLinks {
-  let pageCount = Math.ceil(count / size)
+function getLinks(
+	baseUrl: URL,
+	page: number,
+	size: number,
+	count: number,
+): PaginationLinks {
+	const pageCount = Math.ceil(count / size)
 
-  let links: PaginationLinks = {
-    self: baseUrl.toString()
-  }
+	const links: PaginationLinks = {
+		self: baseUrl.toString(),
+	}
 
-  if (page < pageCount) {
-    baseUrl.searchParams.set("page", (page + 1).toString())
-    links.next = baseUrl.toString()
-    baseUrl.searchParams.set("page", pageCount.toString())
-    links.last = baseUrl.toString()
-  }
+	if (page < pageCount) {
+		baseUrl.searchParams.set("page", (page + 1).toString())
+		links.next = baseUrl.toString()
+		baseUrl.searchParams.set("page", pageCount.toString())
+		links.last = baseUrl.toString()
+	}
 
-  if (page !== 1) {
-    baseUrl.searchParams.set("page", (page - 1).toString())
-    links.prev = baseUrl.toString()
-    baseUrl.searchParams.delete("page")
-    links.first = baseUrl.toString()
-  }
+	if (page !== 1) {
+		baseUrl.searchParams.set("page", (page - 1).toString())
+		links.prev = baseUrl.toString()
+		baseUrl.searchParams.delete("page")
+		links.first = baseUrl.toString()
+	}
 
-  return links
+	return links
 }
 
 export { PaginationLinks, getLinks }

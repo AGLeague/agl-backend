@@ -1,28 +1,33 @@
 {
-  "name": "agl-achievements",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon --env-file=.env -q dist/index.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "googleapis": "^148.0.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.15.2",
-    "concurrently": "^9.1.2",
-    "nodemon": "^3.1.10",
-    "typescript": "^5.8.3"
-  }
+	"name": "agl-achievements",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build": "npx tsc",
+		"start": "node dist/index.js",
+		"lint": "eslint .",
+		"dev": "concurrently \"npx tsc --watch\" \"nodemon --env-file=.env -q dist/index.js\"",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^5.1.0",
+		"googleapis": "^148.0.0"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.26.0",
+		"@stylistic/eslint-plugin": "^4.2.0",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^5.0.1",
+		"@types/node": "^22.15.2",
+		"concurrently": "^9.1.2",
+		"eslint": "^9.26.0",
+		"nodemon": "^3.1.10",
+		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.32.0"
+	}
 }
