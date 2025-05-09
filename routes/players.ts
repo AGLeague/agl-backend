@@ -86,19 +86,29 @@ router.get("", async function(req, res) {
 		range: range,
 	})
 
-	const response: PaginatedResponse<Players> = {
-		links: getLinks(url, page, size, playerCount),
-		data: results.data.values.map((row): Players => {
-			return {
-				name: row[0],
-				stats: {
-					leagueCount: -1, // parseFloat(row[4]),
-					winRate: parseFloat(trimPercentSign(row[3])),
-					// TODO: This one is slightly more complicated
-					top8s: -1,
-				},
+	let response;
+	if (results.data.values) {
+		response = {
+			links: getLinks(url, page, size, playerCount),
+			data: results.data.values.map((row): Players => {
+				return {
+					name: row[0],
+					stats: {
+						leagueCount: -1, // parseFloat(row[4]),
+						winRate: parseFloat(trimPercentSign(row[3])),
+						// TODO: This one is slightly more complicated
+						top8s: -1,
+					},
+				}
+			}),
+		}
+	} else {
+		response = {
+			error: {
+				message: "No info from spreadsheets"
 			}
-		}),
+		}
+
 	}
 
 	res.status(200).json(response)
