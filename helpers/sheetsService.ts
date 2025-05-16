@@ -48,6 +48,14 @@ class StatsSource {
 		return this._players.slice(startRow, endRow)
 	}
 
+	public getPlayer(playerName: string): Players | undefined {
+		if (!this._players) {
+			throw new Error("Players were not initialized.")
+		}
+
+		return this._playersIndex.get(playerName)
+	}
+
 	public count() {
 		if (!this._players) {
 			throw new Error("Players were not initialized.")
@@ -132,11 +140,8 @@ class StatsSource {
 		if (!results.data.values)
 			throw new Error("Failure getting league count")
 
-		console.log(results.data.values[1])
-
 		for (let column = 0; column < results.data.values[1].length; column++) {
 			const leagueName = results.data.values[1][column]
-			console.log("Counting for " + leagueName)
 
 			let row = 2
 
@@ -151,7 +156,6 @@ class StatsSource {
 				}
 				player.stats.leagueCount = player.stats.leagueCount + 1
 				player.leagues.push(leagueName)
-				console.log(player.leagues)
 				row++
 			}
 		}

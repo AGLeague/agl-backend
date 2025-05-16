@@ -52,4 +52,24 @@ router.get("", async function(req, res) {
 	})
 })
 
+router.get("/:playerId", async function(req, res) {
+	await statsSource.initialize()
+
+	const url = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`)
+	console.log("Get for: " + req.params.playerId)
+	let player = statsSource.getPlayer(req.params.playerId)
+
+	if (!player) {
+		res.status(404).json({
+			error: { message: "Player not found" }
+		})
+		return
+	}
+
+	res.status(200).json({
+		links: {},
+		data: player,
+	})
+})
+
 export default router
