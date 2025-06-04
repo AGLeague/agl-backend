@@ -5,3 +5,4 @@
 .env
 
 # Database should just be local.
+db.sqlite
