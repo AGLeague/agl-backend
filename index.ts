@@ -16,6 +16,8 @@ app.use(cors())
 const API_KEY = process.env.API_KEY
 const STATS_SHEET_ID = process.env.STATS_SHEET
 const PASSWORD = process.env.PASSWORD
+const DB_PATH = process.env.DB_PATH ?? "db.sqlite"
+
 if (!API_KEY)
 	throw new Error("Missing API Key")
 
@@ -25,7 +27,7 @@ if (!STATS_SHEET_ID)
 if (!PASSWORD)
 	throw new Error("Missing PASSWORD")
 
-const model = new DbModel(new Sequelize('sqlite:db.sqlite'))
+const model = new DbModel(new Sequelize('sqlite:' + DB_PATH))
 const statsSource = new StatsSource(model)
 const sheetsSource = new SheetsModel(API_KEY, STATS_SHEET_ID)
 
