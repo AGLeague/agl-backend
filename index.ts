@@ -6,6 +6,7 @@ import DbModel from "./models"
 import { Sequelize } from "sequelize"
 import StatsSource, { SheetsModel } from "./helpers/sheetsService"
 import adminRouter from "./routes/admin"
+import achievementRouter from "./routes/achievements"
 
 const app: Express = express()
 
@@ -30,6 +31,7 @@ const sheetsSource = new SheetsModel(API_KEY, STATS_SHEET_ID)
 
 app.use("/api/players", playerRoute(statsSource))
 app.use("/api/admin", adminRouter(sheetsSource, model, PASSWORD))
+app.use("/api/achievements", achievementRouter(statsSource))
 
 app.get("/", (_: Request, res: Response) => {
 	res.send("A placeholder for something cool coming soon")

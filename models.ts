@@ -115,7 +115,7 @@ class DbModel {
 	}
 
 	public getPlayer(playerName: string) {
-		return Player.findOne({ where: { name: playerName } })
+		return Player.findOne({ where: { name: playerName }, include: League })
 	}
 }
 
