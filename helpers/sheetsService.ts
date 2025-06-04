@@ -112,13 +112,15 @@ class StatsSource {
 			stats: {
 				leagueCount: player.leagues.length,
 				winRate: player.winRate,
-				top8s: player.winRate,
+				top8s: player.top8s,
 			}
 		}
 	}
 
 	public async getPage(page: number, size: number): Promise<{ players: Players[], totalCount: number }> {
 		const response = await this._model.getPlayersPage(page, size)
+
+		console.log("Get Page has " + response.players.length + " rows")
 		return { players: response.players.map(this.dbToResponse), totalCount: response.totalCount }
 	}
 
@@ -128,15 +130,7 @@ class StatsSource {
 		if (!player)
 			return
 
-		return {
-			name: player.name,
-			leagues: player.leagues.map(l => l.name),
-			stats: {
-				leagueCount: player.leagues.length,
-				winRate: player.winRate,
-				top8s: player.winRate,
-			}
-		}
+		return this.dbToResponse(player)
 	}
 }
 
