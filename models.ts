@@ -57,7 +57,10 @@ class DbModel {
 					allowNull: true,
 				}
 			},
-			{ sequelize: this._db },
+			{
+				sequelize: this._db,
+				modelName: 'player',
+			},
 		)
 
 		League.init(
@@ -73,13 +76,16 @@ class DbModel {
 					unique: true,
 				},
 			},
-			{ sequelize: this._db },
+			{
+				sequelize: this._db,
+				modelName: 'league',
+			},
 		)
 
-		Player.belongsToMany(League, { through: 'PlayerLeagues' })
-		League.belongsToMany(Player, { through: 'PlayerLeagues' })
+		Player.belongsToMany(League, { through: 'playerLeagues' })
+		League.belongsToMany(Player, { through: 'playerLeagues' })
 
-		await this._db.sync({ alter: true })
+		await this._db.sync()
 	}
 
 	public async updatePlayersWinRate(players: { name: string, winRate?: number }[]) {
@@ -95,8 +101,6 @@ class DbModel {
 
 		foundPlayers = await Player.findAll({ where: { name: { [Op.in]: players } } })
 
-		console.log("GOT ID OF " + foundPlayers[3].id)
-
 		const findResult = await League.findOrCreate({ where: { name: leagueName }, include: Player })
 		const league = findResult[0]
 		await league.setPlayers(foundPlayers)
@@ -105,9 +109,9 @@ class DbModel {
 	public async getPlayersPage(page: number, size: number): Promise<{ players: Player[], totalCount: number }> {
 		// Need to use base 0, instead of 1
 		page = page - 1
-		let dbResult = await Player.findAndCountAll({ limit: size, offset: page * size, order: ["winrate"] })
-		return { players: dbResult.rows, totalCount: dbResult.count }
+		let dbResult = await Player.findAndCountAll({ limit: size, offset: page * size, order: [["winrate", "DESC"]], include: League })
 
+		return { players: dbResult.rows, totalCount: dbResult.count }
 	}
 
 	public getPlayer(playerName: string) {

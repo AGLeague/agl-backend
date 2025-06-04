@@ -25,17 +25,24 @@ function playerRouter(statsSource: StatsSource) {
 	router.get("", async function(req, res) {
 		const url = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`)
 
-		// First page is the default
-		const page = getSearchParamAsNumber(url, "page", 1)
-		// If we are aiming for a binder appearance, 3x4 as a default?
-		const size = getSearchParamAsNumber(url, "size", 12)
+		try {
+			// First page is the default
+			const page = getSearchParamAsNumber(url, "page", 1)
+			// If we are aiming for a binder appearance, 3x4 as a default?
+			const size = getSearchParamAsNumber(url, "size", 12)
 
-		let playerPage = await statsSource.getPage(page, size)
+			let playerPage = await statsSource.getPage(page, size)
 
-		res.status(200).json({
-			links: getLinks(url, page, size, playerPage.totalCount),
-			data: playerPage.players,
-		})
+			res.status(200).json({
+				links: getLinks(url, page, size, playerPage.totalCount),
+				data: playerPage.players,
+			})
+
+
+		} catch (ex) {
+			console.log(ex)
+			res.status(500).json({ error: ex })
+		}
 	})
 
 	router.get("/:playerId", async function(req, res) {
