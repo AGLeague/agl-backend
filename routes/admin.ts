@@ -1,15 +1,26 @@
-import { Router } from "express"
+import { Request, Response, Router } from "express"
+
 import StatsSource, { SheetsModel } from "../helpers/sheetsService"
 import DbModel from "../models"
 
 function adminRouter(source: SheetsModel, db: DbModel, password: string) {
 	const router = Router()
 
-	router.get("/refresh/winRates", async function(req, res) {
-		if (req.query.password !== password) {
+	// Admin routes require auth.
+	router.use((req, res, next) => {
+		if (!password) {
+			// If the instance is not setup right, don't allow requests without a password
+			res.status(500).json({ error: "Bad Config" })
+		} else if (req.query.password !== password) {
 			res.status(401).json({ error: "Unauthorized" })
+			return
+		} else {
+			next()
 		}
+	})
 
+
+	router.get("/refresh/winRates", async function(req, res) {
 		try {
 			let winRates = await source.getWinRates()
 
@@ -22,10 +33,6 @@ function adminRouter(source: SheetsModel, db: DbModel, password: string) {
 	})
 
 	router.get("/refresh/top8s", async function(req, res) {
-		if (req.query.password !== password) {
-			res.status(401).json({ error: "Unauthorized" })
-		}
-
 		let top8s = await source.getTop8s()
 
 		await db.updatePlayersTop8s(top8s)
@@ -34,10 +41,6 @@ function adminRouter(source: SheetsModel, db: DbModel, password: string) {
 	})
 
 	router.get("/refresh/leagues", async function(req, res) {
-		if (req.query.password !== password) {
-			res.status(401).json({ error: "Unauthorized" })
-		}
-
 		try {
 			let leagues = await source.populateLeagueCount()
 
