@@ -2,16 +2,19 @@ import { Request, Response, Router } from "express"
 
 import StatsSource, { SheetsModel } from "../helpers/sheetsService"
 import DbModel from "../models"
+import winston from "winston"
 
-function adminRouter(source: SheetsModel, db: DbModel, password: string) {
+function adminRouter(source: SheetsModel, db: DbModel, logger: winston.Logger, password: string) {
 	const router = Router()
 
 	// Admin routes require auth.
 	router.use((req, res, next) => {
 		if (!password) {
 			// If the instance is not setup right, don't allow requests without a password
+			logger.warn("Admin route requested without a password")
 			res.status(500).json({ error: "Bad Config" })
 		} else if (req.query.password !== password) {
+			logger.error("Admin route requested with an invalid password")
 			res.status(401).json({ error: "Unauthorized" })
 			return
 		} else {
@@ -28,6 +31,7 @@ function adminRouter(source: SheetsModel, db: DbModel, password: string) {
 
 			res.status(200).json({ data: "Success!" })
 		} catch (ex) {
+			logger.error(ex)
 			res.status(500).json({ error: ex })
 		}
 	})
@@ -50,6 +54,7 @@ function adminRouter(source: SheetsModel, db: DbModel, password: string) {
 
 			res.status(200).json({ data: "Success!" })
 		} catch (ex) {
+			logger.error(ex)
 			res.status(500).json({ error: ex })
 		}
 	})

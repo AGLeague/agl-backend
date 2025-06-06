@@ -8,6 +8,19 @@ import StatsSource, { SheetsModel } from "./helpers/sheetsService"
 import adminRouter from "./routes/admin"
 import achievementRouter from "./routes/achievements"
 
+import winston from "winston"
+
+const logger = winston.createLogger({
+	level: 'info',
+	format: winston.format.json(),
+	defaultMeta: { service: 'app' },
+	transports: [
+		new winston.transports.Console()
+	],
+})
+
+logger.info("Created a logger")
+
 const app: Express = express()
 
 app.use(express.json())
@@ -27,12 +40,15 @@ if (!STATS_SHEET_ID)
 if (!PASSWORD)
 	throw new Error("Missing PASSWORD")
 
-const model = new DbModel(new Sequelize('sqlite:' + DB_PATH))
-const statsSource = new StatsSource(model)
+const dbLogger = logger.child({ service: 'sequelize' })
+const sequelize = new Sequelize('sqlite:' + DB_PATH, { logging: msg => dbLogger.info(msg) })
+
+const model = new DbModel(sequelize, logger.child({ service: 'db-model' }))
+const statsSource = new StatsSource(model, logger.child({ service: 'stats-source' }))
 const sheetsSource = new SheetsModel(API_KEY, STATS_SHEET_ID)
 
-app.use("/api/players", playerRoute(statsSource))
-app.use("/api/admin", adminRouter(sheetsSource, model, PASSWORD))
+app.use("/api/players", playerRoute(statsSource, logger.child({ route: 'players' })))
+app.use("/api/admin", adminRouter(sheetsSource, model, logger.child({ route: 'admin' }), PASSWORD))
 app.use("/api/achievements", achievementRouter(statsSource))
 
 app.get("/", (_: Request, res: Response) => {
@@ -42,9 +58,9 @@ app.get("/", (_: Request, res: Response) => {
 const port = process.env.PORT || 8000
 
 model.initialize().then(() => {
-	console.log("Tables initialized")
+	logger.info("Tables initialized")
 }).then(() => {
 	app.listen(port, () => {
-		console.log(`App listening on port ${port}`)
+		logger.info(`App listening on port ${port}`)
 	})
 })

@@ -18,7 +18,9 @@
 		"express": "^5.1.0",
 		"googleapis": "^148.0.0",
 		"sequelize": "^6.37.7",
-		"sqlite3": "^5.1.7"
+		"sequelize-typescript-generator": "^12.0.1",
+		"sqlite3": "^5.1.7",
+		"winston": "^3.17.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.26.0",
@@ -29,6 +31,7 @@
 		"concurrently": "^9.1.2",
 		"eslint": "^9.26.0",
 		"nodemon": "^3.1.10",
+		"sequelize-cli": "^6.6.3",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.32.0"
 	}

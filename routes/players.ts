@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import { getLinks } from "../helpers/responseHelpers"
 import StatsSource from "../helpers/sheetsService"
+import winston from "winston"
 
 function getSearchParamAsNumber(
 	url: URL,
@@ -19,7 +20,7 @@ function getSearchParamAsNumber(
 	return parseInt(paramValue)
 }
 
-function playerRouter(statsSource: StatsSource) {
+function playerRouter(statsSource: StatsSource, logger: winston.Logger) {
 	const router = Router()
 
 	router.get("", async function(req, res) {
@@ -40,13 +41,13 @@ function playerRouter(statsSource: StatsSource) {
 
 
 		} catch (ex) {
-			console.log(ex)
+			logger.error(ex)
 			res.status(500).json({ error: ex })
 		}
 	})
 
 	router.get("/:playerId", async function(req, res) {
-		console.log("Get for: " + req.params.playerId)
+		logger.debug("Get for: " + req.params.playerId)
 		let player = await statsSource.getPlayer(req.params.playerId)
 
 		if (!player) {

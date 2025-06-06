@@ -1,38 +1,34 @@
 import { DataTypes, HasManySetAssociationsMixin, Model, Op, Sequelize } from "sequelize";
+import winston from "winston"
 
 class Player extends Model {
-	declare id: number;
-	declare name: string;
-	// declare leagueCount: string; // Can be calculated from league table.
-	declare winRate: number;
-	declare top8s: number;
-	declare leagues: League[]
+	declare id: number
+	declare name: string
+	declare winRate: number
+	declare top8s: number
+	declare placements: LeaguePlacement[]
 }
 
 class League extends Model {
-	declare id: number;
-	declare name: string;
-	declare players: Player[]
-	declare setPlayers: HasManySetAssociationsMixin<Player, number>
+	declare id: number
+	declare name: string
+	declare setLeaguePlacements: HasManySetAssociationsMixin<LeaguePlacement, number>
 }
 
-/*
-class Stat extends Model {
-	declare id: number;
-	// declare leagueCount: string; // Can be calculated from league table.
-	declare winRate: number;
-	declare top8s: number;
+class LeaguePlacement extends Model {
+	declare id: number
+	declare rank: number
+	declare player: Player
+	declare leagueName: string
 }
-*/
-
 
 class DbModel {
 	private _db: Sequelize
+	private _logger: winston.Logger
 	Player: any;
-	constructor(db: Sequelize) {
+	constructor(db: Sequelize, logger: winston.Logger) {
 		this._db = db
-		// this.Player = db.define('Player', {})
-
+		this._logger = logger
 	}
 
 	public async initialize() {
@@ -82,8 +78,30 @@ class DbModel {
 			},
 		)
 
-		Player.belongsToMany(League, { through: 'playerLeagues' })
-		League.belongsToMany(Player, { through: 'playerLeagues' })
+		LeaguePlacement.init(
+			{
+				id: {
+					type: DataTypes.INTEGER,
+					autoIncrement: true,
+					primaryKey: true,
+				},
+				rank: {
+					type: DataTypes.INTEGER,
+				},
+				// declare player: Player
+				// declare leagueName: string
+			},
+			{
+				sequelize: this._db,
+				modelName: 'leaguePlacements',
+			}
+		)
+
+		Player.hasMany(LeaguePlacement, { as: 'placements', onDelete: 'CASCADE' })
+		LeaguePlacement.belongsTo(Player)
+
+		League.hasMany(LeaguePlacement, { sourceKey: 'name', foreignKey: 'leagueName', onDelete: 'CASCADE' })
+		LeaguePlacement.belongsTo(League, { targetKey: 'name', foreignKey: 'leagueName' })
 
 		await this._db.sync()
 	}
@@ -97,25 +115,39 @@ class DbModel {
 	}
 
 	public async setLeaguePlayers(leagueName: string, players: string[]) {
-		let foundPlayers = await Player.bulkCreate(players.map(name => ({ name })), { updateOnDuplicate: ["name"] })
-
-		foundPlayers = await Player.findAll({ where: { name: { [Op.in]: players } } })
-
-		const findResult = await League.findOrCreate({ where: { name: leagueName }, include: Player })
+		const findResult = await League.findOrCreate({ where: { name: leagueName }, include: LeaguePlacement })
 		const league = findResult[0]
-		await league.setPlayers(foundPlayers)
+
+		let rank = 1
+		for (var playerName of players) {
+			const [player, _] = await Player.findOrCreate({ where: { name: playerName } })
+			this._logger.info({ player })
+
+			const placement = await LeaguePlacement.findOne({ where: { playerId: player.id, leagueName: league.name } })
+			if (!placement) {
+				this._logger.info(await LeaguePlacement.create({ playerId: player.id, leagueName: league.name, rank: rank }))
+			} else if (placement.rank != rank) {
+				this._logger.info("Found a placement.")
+				placement.rank = rank
+				await placement?.save()
+			}
+
+			rank = rank + 1
+		}
+
+		this._logger.info(league)
 	}
 
 	public async getPlayersPage(page: number, size: number): Promise<{ players: Player[], totalCount: number }> {
 		// Need to use base 0, instead of 1
 		page = page - 1
-		let dbResult = await Player.findAndCountAll({ limit: size, offset: page * size, order: [["winrate", "DESC"]], include: League })
+		let dbResult = await Player.findAndCountAll({ limit: size, offset: page * size, order: [["winrate", "DESC"]], include: 'placements' })
 
 		return { players: dbResult.rows, totalCount: dbResult.count }
 	}
 
 	public getPlayer(playerName: string) {
-		return Player.findOne({ where: { name: playerName }, include: League })
+		return Player.findOne({ where: { name: playerName }, include: LeaguePlacement })
 	}
 }
 
