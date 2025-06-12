@@ -22,7 +22,7 @@ This is the stats sheet that serves as a starting point for reading the data nee
 #### PASSWORD
 This is a password used to access the admin apis that do the initial data load. 
 
-It's provided to the apis as a query parameter as a get request, to make it easier to get going. It should eventually be updated to read from a request header.
+It's provided to the apis as a query parameter as a get request, to make it easier to get going. Once I've got the server more stable, this should be updated to read from a request header, instead of a query parameter.
 
 ### Running the server
 
@@ -35,9 +35,8 @@ For a more stable run, the build and and run can be run separately with `npm run
 This repo also includes a Containerfile that can be used to build a docker or podman image. This is built automatically on each push to main, and is the build used to run the deployed version. See the `.github/workflows/docker-image.yml` file to see how that build is done. 
 
 ### Loading the data
-Once the server is running, an initial request can be made to have the server populate it's database with the data from the google sheets. Some additional data needs to be provided, so the request can be made with curl (Currently still in progress, and not yet commited):
-```curl -X POST localhost:8000/api/admin/load/init?password={your api password} -H "Content-Type: application/json" --data-binary "@load.json"```
-
+Once the server is running, an initial request can be made to have the server populate it's database with the data from the google sheets for a single league. 
+This request can be begun by navigating to <http://localhost:8000/api/admin/load/init/TDM?password={your_api_key}>
 
 ## Data Model
 

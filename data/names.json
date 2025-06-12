@@ -1,0 +1,272 @@
+[
+  {
+    "preferredName": "Mitch S",
+    "names": [
+      "Mitch S",
+      "Mitchel S"
+    ]
+  },
+  {
+    "preferredName": "John P",
+    "names": [
+      "John P",
+      "John p"
+    ]
+  },
+  {
+    "preferredName": "Lotte P",
+    "names": [
+      "Lotte P",
+      "Lotte"
+    ]
+  },
+  {
+    "preferredName": "Gregoire T",
+    "names": [
+      "Gregoire T",
+      "Greg T"
+    ]
+  },
+  {
+    "preferredName": "Cody-Rayce MG",
+    "names": [
+      "Cody-Rayce M-G",
+      "Cody-Rayce MG",
+      "Cody-Rayce M"
+    ]
+  },
+  {
+    "preferredName": "Anthony G",
+    "names": [
+      "Anthony G",
+      "Tony G"
+    ]
+  },
+  {
+    "preferredName": "Samantha R",
+    "names": [
+      "Samantha R",
+      "Sam R"
+    ]
+  },
+  {
+    "preferredName": "Jean-Rene B",
+    "names": [
+      "Jean-Rene B",
+      "Jean-René B"
+    ]
+  },
+  {
+    "preferredName": "Krzys H",
+    "names": [
+      "Krzys H",
+      "Krzysz H",
+      "Kryzs H"
+    ]
+  },
+  {
+    "preferredName": "Wesley L",
+    "names": [
+      "Wesley L",
+      "Wesley K"
+    ]
+  },
+  {
+    "preferredName": "James S (Zoid)",
+    "names": [
+      "James S"
+    ],
+    "arenaIds": [
+      "Zoid#33631"
+    ]
+  },
+  {
+    "preferredName": "James S (Tortilla)",
+    "names": [
+      "James S"
+    ],
+    "arenaIds": [
+      "TortillaThePun#11942"
+    ]
+  },
+  {
+    "preferredName": "Evan L (old)",
+    "names": [
+      "Evan L"
+    ],
+    "arenaIds": [
+      "spectre#14747"
+    ]
+  },
+  {
+    "preferredName": "Evan L",
+    "names": [
+      "Evan L"
+    ],
+    "arenaIds": [
+      "Evan#97713"
+    ]
+  },
+  {
+    "preferredName": "Eric S (old)",
+    "names": [
+      "Eric S"
+    ],
+    "arenaIds": [
+      "ejseltzer#94931",
+      ""
+    ],
+    "_comment": "Empty string is a hack for old docs (KHM) not including Arena IDs everywhere"
+  },
+  {
+    "preferredName": "Eric S",
+    "names": [
+      "Eric S"
+    ],
+    "arenaIds": [
+      "smitte#94855",
+      "Smitte#94855"
+    ]
+  },
+  {
+    "preferredName": "Michael B (VonLego)",
+    "names": [
+      "Michael B"
+    ],
+    "arenaIds": [
+      "VonLego#56247",
+      ""
+    ],
+    "_comment": "Empty string is a hack for old docs (ZNR/KHM) not including Arena IDs everywhere"
+  },
+  {
+    "preferredName": "Michael B (morty)",
+    "names": [
+      "Michael B"
+    ],
+    "arenaIds": [
+      "morty#98559"
+    ]
+  },
+  {
+    "preferredName": "Michael B (Monkeymage)",
+    "names": [
+      "Michael B"
+    ],
+    "arenaIds": [
+      "Monkeymage#12141"
+    ]
+  },
+  {
+    "preferredName": "Daniel S (old)",
+    "names": [
+      "Daniel S"
+    ],
+    "arenaIds": [
+      ""
+    ]
+  },
+  {
+    "preferredName": "Daniel S",
+    "names": [
+      "Daniel S"
+    ],
+    "arenaIds": [
+      "Obitus#54120"
+    ]
+  },
+  {
+    "preferredName": "Jonathan R",
+    "names": [
+      "Jonathan R"
+    ],
+    "arenaIds": [
+      "MetalFingers#36803"
+    ]
+  },
+  {
+    "preferredName": "Jonathan R (old)",
+    "names": [
+      "Jonathan R"
+    ],
+    "arenaIds": [
+      "Jraps#79124"
+    ]
+  },
+  {
+    "preferredName": "Zack H",
+    "names": [
+      "Zack H",
+      "Zach H"
+    ],
+    "arenaIds": [
+      "HackZolt#31077"
+    ]
+  },
+  {
+    "preferredName": "Zach H",
+    "names": [
+      "Zach H"
+    ],
+    "arenaIds": [
+      "delzed#19101",
+      ""
+    ]
+  },
+  {
+    "preferredName": "Rick N",
+    "names": [
+      "Rick N",
+      "RIck N"
+    ],
+    "arenaIds": [
+      "DeadlyErioc#94140"
+    ]
+  },
+  {
+    "preferredName": "Juan P",
+    "names": [
+      "Juan P",
+      "Juan PB"
+    ],
+    "arenaIds": [
+      "juapebe#64299"
+    ]
+  },
+  {
+    "preferredName": "Alex M (bikedog)",
+    "names": [
+      "Alex M"
+    ],
+    "arenaIds": [
+      "bikedog#84690"
+    ]
+  },
+  {
+    "preferredName": "Alex M",
+    "names": [
+      "Alex M"
+    ],
+    "arenaIds": [
+      "ItsYaBoiAlex#76222"
+    ]
+  },
+  {
+    "preferredName": "Elliot WO",
+    "names": [
+      "Elliot WO",
+      "Elliot W"
+    ],
+    "arenaIds": [
+      "Zorkz#52621",
+      "rraaaa#18789"
+    ]
+  },
+  {
+    "preferredName": "Colton M",
+    "names": [
+      "Colton M",
+      "Mang"
+    ]
+  }
+]

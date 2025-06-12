@@ -1,0 +1,1232 @@
+[
+  {
+    "code": "ZNR",
+    "name": "Zendikar",
+    "year": 2020,
+    "docId": "1Pf3XKsZaig5H0t_I6glsbaazt7gIIlZICI0xK32iVL4",
+    "deathAtLoss": 11,
+    "noEntropySheet": true,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "KLR",
+    "name": "Kaladesh",
+    "year": 2020,
+    "docId": "18dsT7KMn0ZRCHvysv69J67Gn3j9pwQtkdzyTB76-NrU",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "KHM",
+    "name": "Kaldheim",
+    "year": 2021,
+    "docId": "11UxW4eSbz-VV2cfL0VspC7PTGVk74Lu79ukPlskRUVY",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "CH1",
+    "name": "Chaos",
+    "year": 2021,
+    "docId": "1XwFe7BSrAHfiEAqaFmIJ1Bwzn-unRe5P6-JmWwOgb-w",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "STX",
+    "name": "Strixhaven",
+    "year": 2021,
+    "docId": "1dftJA5qtBoFjQQGT1adB7kSYHVEe-oMkP_3g8rIce3M",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "AFR",
+    "name": "AFR",
+    "year": 2021,
+    "docId": "1h2zJP_f-KcL6IsZ_uAvpFENqHCuzUn-nqsq7_71BiOI",
+    "deathAtLoss": 11,
+    "hourOffset": -32,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "MID",
+    "name": "MID",
+    "year": 2021,
+    "docId": "1JLYBC87MlRi7qwJPBBTjDsVe4vHdU2qBAP32CGRrj-Q",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "VOW",
+    "name": "VOW",
+    "year": 2021,
+    "docId": "1RbBTZVkc7dRbb5QrTpbqGR0uJdjiJqITuyBnT4ujP-A",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "CH2",
+    "name": "Chaos 2",
+    "year": 2022,
+    "docId": "1N7lok3Rny4GZ_six7CeMkDS9erTPRCZbuDZSZ8tAnbk",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "NEO",
+    "name": "NEO",
+    "year": 2022,
+    "docId": "1vYeNHx07RFXfSWZXuBru6RBWSjM6CgpmYAE-_Uq4EWw",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "DBL",
+    "year": 2022,
+    "docId": "1aYvPX0eoH0EalzP61h-ctjFn_318dQPqjHaeIXEwnTo",
+    "deathAtLoss": 11,
+    "teamMode": "CombineRecords",
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "SNC",
+    "year": 2022,
+    "docId": "13OndihG8M5d_YoqXi4THV3a0rLMY3u4_PW8bfOjMGtU",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "ELD",
+    "name": "ELDx2",
+    "year": 2022,
+    "docId": "1zj-bT012MA0Zz5qECUJ0uiEOSXB4ycXiuNgVH4Qa19I",
+    "deathAtLoss": 6,
+    "mainTourneyPrizes": [
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        14,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      40,
+      35,
+      30,
+      25,
+      20,
+      15,
+      10,
+      5
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "HBG",
+    "year": 2022,
+    "docId": "1cNoZe15TjOgmtTsbH1R3nX_YU9Q9E224bjVUEV0haDk",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        1,
+        25
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        8,
+        10
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "megadraftPrizes": [
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "DMU",
+    "year": 2022,
+    "docId": "1Eg6v_rEujVNynMvzPYGAnf4XZJzDuUKfgobEMv0pNPQ",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        4,
+        25
+      ],
+      [
+        12,
+        20
+      ],
+      [
+        29,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      50,
+      45,
+      40,
+      35,
+      30,
+      25,
+      20,
+      15
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "SET",
+    "name": "SET WARS",
+    "year": 2022,
+    "docId": "1jpko5ExF-_8Xg-G-Q34fHgT5unDrNvVH5P5ey2HeZz8",
+    "deathAtLoss": null,
+    "teamMode": "CombineRecords",
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        120
+      ],
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ]
+    ]
+  },
+  {
+    "code": "BRO",
+    "year": 2022,
+    "docId": "1RLvLz_yFV20eseCxdI9ZmLXDKcHWTG2-EuRcdesMD_o",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        1,
+        35
+      ],
+      [
+        7,
+        25
+      ],
+      [
+        8,
+        160
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        24,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      45,
+      40,
+      35,
+      30,
+      25,
+      20,
+      15,
+      10
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "PLC",
+    "name": "PLANECHASE",
+    "year": 2023,
+    "docId": "1Xrw5-nyJ2JhO0Q2TJwHChSPlASmBtTcQfGVZ8CFKhbY",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        4,
+        30
+      ],
+      [
+        4,
+        25
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        18,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      35,
+      30,
+      25,
+      20,
+      15,
+      15,
+      10,
+      10
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "ONE",
+    "year": 2023,
+    "docId": "1rlNPKKHjCwF7pI5svSuws61CzIKKdaC4HY1lp8lHO94",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        1,
+        30
+      ],
+      [
+        7,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        22,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      50,
+      45,
+      40,
+      35,
+      25,
+      20,
+      15,
+      10
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "SIR",
+    "year": 2023,
+    "docId": "1auiIm5rknGp3oRs5Ncvuc9xQzT8nhpXv1NsLkmrlCbI",
+    "deathAtLoss": 6,
+    "mainTourneyPrizes": [
+      [
+        8,
+        10
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        14,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      40,
+      35,
+      30,
+      20,
+      12.5,
+      10,
+      7.5,
+      5
+    ],
+    "newPlayerPrize": 10,
+    "newPlayerCutoff": "DMU",
+    "finalPrizes": []
+  },
+  {
+    "code": "MOM",
+    "year": 2023,
+    "docId": "1sDEFgOo0aEXNkTkr8Uu7R764K3yMEjQEL4bNkp8u8v8",
+    "deathAtLoss": 11,
+    "mainTourneyPrizes": [
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        26,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      60,
+      50,
+      45,
+      35,
+      30,
+      25,
+      20,
+      15
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "NEp",
+    "name": "NEO Partners",
+    "year": 2023,
+    "docId": "182khsPKp_YSl_3QU02kmJSL6UvmpF6jQvk2fd6jDlsA",
+    "deathAtLoss": 11,
+    "teamMode": "CombineRecords",
+    "mainTourneyPrizes": [
+      [
+        8,
+        30
+      ],
+      [
+        6,
+        20
+      ]
+    ],
+    "megadraftPrizes": [
+      70,
+      60,
+      40,
+      30
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "LTR",
+    "year": 2023,
+    "docId": "1PYZdb8bsGq0qXB1mRXd89r8vP4HFGHS0ASIEdmz6CxI",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        17,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      50,
+      40,
+      35,
+      25,
+      20,
+      15,
+      10,
+      5
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "WOE",
+    "year": 2023,
+    "docId": "16IMfMtQDQ_-o4lNxFWdWr01u1mZbyLNknbIAKR4gkaQ",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [
+      [
+        1,
+        70
+      ],
+      [
+        3,
+        30
+      ],
+      [
+        4,
+        25
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        26,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      35,
+      25,
+      20,
+      17.5,
+      15,
+      12.5,
+      10,
+      5
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "XLR",
+    "name": "XLN",
+    "year": 2023,
+    "docId": "1RkUgHibr1W_2h2bh6WG5rmriyovkMfeOdnxYH_gBm6o",
+    "deathAtLoss": 6,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [
+      [
+        1,
+        40
+      ],
+      [
+        7,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        14,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      30,
+      21,
+      18,
+      15,
+      13,
+      10,
+      8,
+      5
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "LCI",
+    "year": 2023,
+    "docId": "1UkYIIDuKExHB1TB8noG18O3O2q9Mxu-Hw_D2_e4wSBk",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [
+      [
+        1,
+        30
+      ],
+      [
+        3,
+        20
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        19,
+        10
+      ]
+    ],
+    "megadraftPrizes": [
+      50,
+      45,
+      40,
+      35,
+      25,
+      20,
+      15.10
+    ],
+    "finalPrizes": []
+  },
+  {
+    "code": "KTK",
+    "year": 2024,
+    "docId": "1sS9HsP0_qzLOiCU0ne16Wh-d13SSu0gQyLHRhxwT2LI",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": []
+  },
+  {
+    "code": "MKM",
+    "year": 2024,
+    "docId": "1qBbtGMkayK9_QNYNdqGDEu_Qy8gUhLyLFpApARfW7tM",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        65
+      ],
+      [
+        1,
+        55
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        28,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "CH3",
+    "name": "CHAOS 3",
+    "year": 2024,
+    "docId": "1epvUPDd1NSXM7FHzIKMQ5UuHv0Eo4ud6JeEtgchmUdM",
+    "deathAtLoss": 14,
+    "teamMode": "CombineRecords",
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        210
+      ],
+      [
+        1,
+        120
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        6,
+        30
+      ]
+    ]
+  },
+  {
+    "code": "OTJ",
+    "year": 2024,
+    "docId": "1S1iIyqQdKLjjj-KMzD7QXWTB12M8RsTCmpIp2LHI8mI",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        75
+      ],
+      [
+        1,
+        55
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        26,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "MH3",
+    "year": 2024,
+    "docId": "1lzZr5q9AF_iEGUh-b5O_Bl-mnHtxZXwNyyMID0M5qYY",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        55
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        1,
+        25
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        16,
+        10
+      ],
+      [
+        32,
+        5
+      ]
+    ],
+    "newPlayerPrize": 10,
+    "newPlayerCutoff": "KTK"
+  },
+  {
+    "code": "BLB",
+    "year": 2024,
+    "docId": "1DUt4sMsnzHwsciYMUObB_HayhvGhwnN4Mk9CaAY-Mno",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        120
+      ],
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        32,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "DSK",
+    "year": 2024,
+    "docId": "1bjmQB_Zow9NPD_2uiPpEjqNVg5rllw87EGLirGgPT6g",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        90
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        30,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "FDN",
+    "year": 2024,
+    "docId": "1ENmNT1vDXgxic3H1NIgxdNA9F20iHBZmGkkwMR5T70c",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        100
+      ],
+      [
+        1,
+        90
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        28,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "PIO",
+    "year": 2024,
+    "docId": "1A6eN5BvMbhY68sCbI45RPzqBx-bZNSKsTuU1RgKp5yM",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        75
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        1,
+        25
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        13,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "DFT",
+    "year": 2025,
+    "docId": "1kWdmraO5mJ4RSYgOPjgu7zY6hvhsCW7APW2hT5UoSV4",
+    "deathAtLoss": 11,
+    "stopMode": {
+      "StopAtWins": 20
+    },
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        120
+      ],
+      [
+        1,
+        90
+      ],
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        8,
+        25
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        38,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "NXT",
+    "year": 2025,
+    "docId": "1z6JxjB4oAXUsL-T7LfrJPM673Uu2PtIBeeTfuQD6cc4",
+    "deathAtLoss": 6,
+    "omwIncludesEntropy": false,
+    "maxExternalMatches": 1,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        80
+      ],
+      [
+        1,
+        70
+      ],
+      [
+        1,
+        60
+      ],
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        1,
+        25
+      ],
+      [
+        8,
+        20
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        18,
+        10
+      ]
+    ]
+  },
+  {
+    "code": "TDM",
+    "standingsRange": "Standings!A4:10000",
+    "year": 2025,
+    "docId": "1xDeykeaMerpwNqZecam20AdV81wBX_I-69jAawxdCV0",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [
+      [
+        1,
+        50
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        1,
+        40
+      ],
+      [
+        1,
+        35
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        1,
+        26
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        1,
+        18
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        16,
+        10
+      ]
+    ]
+  }
+]
