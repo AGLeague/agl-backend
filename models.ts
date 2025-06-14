@@ -3,7 +3,6 @@ import winston from "winston"
 import { NoMatchedError, NotUniqueMatch } from "./exceptions";
 import { FullPlayerNameHelper, NameHelper } from "./helpers/names";
 
-
 const CURRENT_ACHIEVEMENT_VERSION = 0
 
 class Player extends Model<InferAttributes<Player>, InferCreationAttributes<Player>> {
@@ -406,7 +405,7 @@ WHERE
 
 	public async getAchievements(playerId: number) {
 		const results = await this._db.query(
-			'SELECT * FROM vw_achievements WHERE playerId = ?',
+			'SELECT * FROM vw_achievements WHERE playerId = $1',
 			{
 				bind: [playerId],
 				type: QueryTypes.SELECT,
