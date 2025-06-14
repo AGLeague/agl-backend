@@ -3,6 +3,15 @@ import { Router } from "express"
 import { getLinks } from "../helpers/responseHelpers"
 import StatsSource from "../helpers/sheetsService"
 import winston from "winston"
+import DbModel from "../models"
+
+enum Rarity {
+	Common = "C",
+	Uncommon = "U",
+	Rare = "R",
+	Mythic = "M",
+	SPG = "S",
+}
 
 function getSearchParamAsNumber(
 	url: URL,
@@ -20,7 +29,28 @@ function getSearchParamAsNumber(
 	return parseInt(paramValue)
 }
 
-function playerRouter(statsSource: StatsSource, logger: winston.Logger) {
+function getRarity(ach: {
+	common: boolean
+	uncommon: boolean
+	rare: boolean
+	mythic: boolean
+	spg: boolean
+}) {
+	if (ach.spg)
+		return Rarity.SPG
+	if (ach.mythic)
+		return Rarity.Mythic
+	if (ach.rare)
+		return Rarity.Rare
+	if (ach.uncommon)
+		return Rarity.Uncommon
+	if (ach.common)
+		return Rarity.Common
+}
+
+
+
+function playerRouter(statsSource: StatsSource, logger: winston.Logger, model: DbModel) {
 	const router = Router()
 
 	router.get("", async function(req, res) {
@@ -60,6 +90,35 @@ function playerRouter(statsSource: StatsSource, logger: winston.Logger) {
 		res.status(200).json({
 			links: {},
 			data: player,
+		})
+	})
+
+	router.get("/:playerId/achievements", async function(req, res) {
+		let player = await statsSource.getPlayer(req.params.playerId)
+
+		if (!player) {
+			res.status(404).json({
+				error: { message: "Player not found" }
+			})
+			return
+		}
+
+		let achievementData = []
+		let dbAchievements = await model.getAchievements(player.id)
+
+
+		for (let achievement of dbAchievements) {
+			achievementData.push({
+				name: achievement.name,
+				rarity: getRarity(achievement),
+				collectorNumber: achievement.collector,
+			})
+		}
+
+		res.status(200).json({
+			data: {
+				achievementData
+			}
 		})
 	})
 

@@ -9,6 +9,8 @@ import { NoMatchedError, NotUniqueMatch } from "../exceptions";
 import { UniqueConstraintError } from "sequelize";
 import { FullPlayerNameHelper, NameHelper } from "../helpers/names";
 
+const CURRENT_ACHIEVEMENT_VERSION = 0
+
 interface PlayerAlias {
 	preferredName: string
 	names: string[]
@@ -24,6 +26,8 @@ interface LeagueInfo {
 	noEntropySheet?: boolean
 	omwIncludesEntropy?: boolean
 	standingsRange?: string
+	matchesRange?: string
+	achievementVersion?: number
 }
 
 function adminRouter(
@@ -66,6 +70,8 @@ function adminRouter(
 					leagueInfo.noEntropySheet,
 					leagueInfo.omwIncludesEntropy,
 					leagueInfo.standingsRange,
+					leagueInfo.matchesRange,
+					leagueInfo.achievementVersion ?? CURRENT_ACHIEVEMENT_VERSION,
 				)
 			} else
 				await db.createLeague(leagueName, leagueName)
@@ -92,7 +98,7 @@ function adminRouter(
 
 	function* getAliasPairs(alias: PlayerAlias, defaultArenaId: string): Generator<{ name: string, arenaId: string }> {
 		for (let name of alias.names) {
-			if (!alias.arenaIds)
+			if (!alias.arenaIds || !alias.arenaIds.length)
 				yield { name: name, arenaId: defaultArenaId }
 			else
 				for (let arenaId of alias.arenaIds)
@@ -120,50 +126,62 @@ function adminRouter(
 		}
 	}
 
+	// TODO: Support these leagues.
+	let skipLeagues = [
+		"NXT", // Need to add some solution for DRAGON matches
+		"DSK"  // Sheets fucked. Miranda J isn't showing up in the rankings
+	]
+
+	router.get("/load/init/all", json(), async function(req, res) {
+
+		const sheetReader = sheetReaderFactory.getStatsSheetReader()
+		const playersByLeague = await sheetReader.getPlayersByLeague()
+
+		for (let leagueCode of playersByLeague.keys()) {
+			if (skipLeagues.includes(leagueCode))
+				continue
+			try {
+				await loadLeague(leagueCode)
+			} catch (e) {
+				let errResponse = { error: e, leagueCode }
+				res.status(400).json(errResponse)
+				return
+			}
+		}
+		res.status(200).json({ data: "Successfully added all!" })
+	})
+
 
 	router.get("/load/init/:leagueCode", json(), async function(req, res) {
 		let leagueCode = req.params["leagueCode"]
-		logger.info("Got League Code", { leagueCode })
-		let leagueInfo = findMatchingLeagueInfo(leagueData, leagueCode)
-		logger.info("Got League Info", { leagueCode })
 		try {
-			leagueCode = await createLeague(leagueInfo, leagueCode)
+			await loadLeague(leagueCode)
 		} catch (e) {
-			let message: string
-			if (e instanceof NotUniqueMatch)
-				message = "did not find a unique league"
-			else
-				message = "Failed creating league"
-			let err = { error: e, message, leagueCode }
-			res.status(400).json(err)
+			let errResponse = { error: e, leagueCode }
+			res.status(400).json(errResponse)
 			return
 		}
+		res.status(200).json({ data: "Successfully added " + leagueCode + "!" })
+	})
+
+	async function loadLeague(leagueCode: string) {
+		logger.info("Got League Code", { leagueCode })
+		let leagueInfo = findMatchingLeagueInfo(leagueData, leagueCode)
+		leagueCode = await createLeague(leagueInfo, leagueCode)
 
 		const leagueReader = sheetReaderFactory.getLeagueReader(
 			leagueInfo?.docId,
 			leagueCode,
 			leagueInfo?.name ?? leagueCode,
 			leagueInfo?.standingsRange,
+			leagueInfo?.matchesRange,
 		)
 
-		logger.info("Got Reader", { leagueCode })
-
 		const standings = await leagueReader.getStandings()
-		logger.info("Got Standings", { leagueCode, standings })
 
 		for (let standing of standings) {
-			try {
-				// TODO: Exclude rank if league is in progress.
-				await createLeagueEntry(aliasData, standing.player, standing.rank, leagueCode)
-			} catch (e) {
-				res.status(400).json({
-					message: "Failed inserting League Entry",
-					error: e,
-					leagueCode,
-					playerName: standing.player
-				})
-				return
-			}
+			// TODO: Exclude rank if league is in progress.
+			await createLeagueEntry(aliasData, standing.player, standing.rank, leagueCode)
 		}
 		logger.info("Created standings. starting Matches")
 
@@ -211,10 +229,9 @@ function adminRouter(
 			await db.createMatch(matchModel)
 			logger.warn("saved match")
 		}
-		res.status(200).json({ data: "Success!" })
-	})
+	}
+
 	return router
 }
 
 export { adminRouter }
-
