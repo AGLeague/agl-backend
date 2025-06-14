@@ -5,7 +5,6 @@ import playerRoute from "./routes/players"
 import DbModel from "./models"
 import { Sequelize } from "sequelize"
 import StatsSource from "./helpers/sheetsService"
-import achievementRouter from "./routes/achievements"
 
 import winston from "winston"
 import { SheetReaderFactory } from "./sheets/leagueSheet"
@@ -50,9 +49,8 @@ const model = new DbModel(sequelize, logger.child({ service: 'db-model' }))
 const statsSource = new StatsSource(model, logger.child({ service: 'stats-source' }))
 const sheetReaderFactory = new SheetReaderFactory(API_KEY, logger.child({ service: "SheetFactory" }), STATS_SHEET_ID)
 
-app.use("/api/players", playerRoute(statsSource, logger.child({ route: 'players' })))
+app.use("/api/players", playerRoute(statsSource, logger.child({ route: 'players' }), model))
 app.use("/api/admin", adminRouter(sheetReaderFactory, model, logger.child({ route: 'admin' }), PASSWORD))
-app.use("/api/achievements", achievementRouter(statsSource, model))
 
 app.get("/", (_: Request, res: Response) => {
 	res.send("A placeholder for something cool coming soon")

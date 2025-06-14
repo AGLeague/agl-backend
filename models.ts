@@ -334,7 +334,7 @@ class DbModel {
 		const foundAlias = await Alias.findAll({ where: { name: nameHelper.name, arenaId: nameHelper.arenaId }, include: Player })
 
 		if (foundAlias.length === 1)
-			return foundAlias[0].getPlayer()
+			return foundAlias[0].getPlayer({include: 'placements'})
 		else if (foundAlias.length > 1)
 			throw new NotUniqueMatch("Found multiple matching alias for " + nameHelper.formattedName)
 		return null
@@ -429,6 +429,26 @@ WHERE
 			})
 		}
 		return achievements
+	}
+
+	public async calculateWinRate(playerId: number): Promise<number> {
+		const query = 'SELECT \n' +
+'(SELECT count(*) AS Wins FROM matches WHERE winnerId = $1) as Wins,\n' +
+'(SELECT Count(*) AS Loses FROM Matches where opponentId = $1) as Loses'
+
+		const results = await this._db.query(query,
+			{
+				bind: [playerId],
+				type: QueryTypes.SELECT,
+			})
+		const onlyResult = results[0] as any
+		const wins = onlyResult['Wins']
+		const loses = onlyResult['Loses']
+		const winRate = wins / (wins + loses)
+
+		return winRate
+
+
 	}
 }
 
