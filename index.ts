@@ -32,6 +32,7 @@ const API_KEY = process.env.API_KEY
 const STATS_SHEET_ID = process.env.STATS_SHEET
 const PASSWORD = process.env.PASSWORD
 const DB_PATH = process.env.DB_PATH ?? "db.sqlite"
+const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL ?? "debug"
 
 if (!API_KEY)
 	throw new Error("Missing API Key")
@@ -43,7 +44,10 @@ if (!PASSWORD)
 	throw new Error("Missing PASSWORD")
 
 const dbLogger = logger.child({ service: 'sequelize' })
-const sequelize = new Sequelize('sqlite:' + DB_PATH, { logging: msg => dbLogger.info(msg) })
+
+let dbLogFunc = (msg: string) => dbLogger.log(DB_LOGGING_LEVEL, msg)
+
+const sequelize = new Sequelize('sqlite:' + DB_PATH, { logging: dbLogFunc})
 
 const model = new DbModel(sequelize, logger.child({ service: 'db-model' }))
 const statsSource = new StatsSource(model, logger.child({ service: 'stats-source' }))
