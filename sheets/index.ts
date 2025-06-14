@@ -12,7 +12,10 @@ class SheetDataHelper implements Iterable<Row> {
 		const headerRow = data[0]
 		const headerIndicies = new Map<string, number>()
 		headerRow.forEach((value, index) => {
-			headerIndicies.set(value, index)
+			// Some sheets have both Rank and RANK Columns (Kaladesh)
+			// Keep the first one seems to be good enough?
+			if (!headerIndicies.has(value.toUpperCase()))
+				headerIndicies.set(value.toUpperCase(), index)
 		})
 		this._headerIndicies = headerIndicies
 
@@ -22,15 +25,7 @@ class SheetDataHelper implements Iterable<Row> {
 
 	*generateRows(): IterableIterator<Row> {
 		for (let rowData of this._data) {
-			this._logger?.info("Generating row", { data: rowData })
 			const helper = new SheetRowHelper(this._headerIndicies, rowData)
-			const playerName = helper.getOptionalColumnByHeader("PLAYER NAME")
-			this._logger?.info({ playerName })
-			if (playerName && playerName.toUpperCase() === "ENTROPY") {
-				this._logger?.info("Found entropy row")
-				break
-			}
-
 			if (!helper.isEmpty())
 				yield helper
 		}
@@ -42,6 +37,7 @@ class SheetDataHelper implements Iterable<Row> {
 interface Row {
 	getColumnByHeader(name: string): string
 	getOptionalColumnByHeader(name: string): string | null
+	isEmpty(): boolean
 }
 
 function replacer<K, V>(key: K, value: V) {
@@ -62,7 +58,7 @@ class SheetRowHelper implements Row {
 	}
 
 	getColumnByHeader(name: string): string {
-		const index = this._headerIndicies.get(name)
+		const index = this._headerIndicies.get(name.toUpperCase())
 
 		if (!index && index !== 0)
 			throw new InvalidFormatError("Sheet is missing a header. Needed: " + name + " Had: " + JSON.stringify(this._headerIndicies, replacer))
@@ -74,7 +70,7 @@ class SheetRowHelper implements Row {
 	}
 
 	getOptionalColumnByHeader(name: string): string | null {
-		const index = this._headerIndicies.get(name)
+		const index = this._headerIndicies.get(name.toUpperCase())
 
 		if (index === undefined)
 			return null

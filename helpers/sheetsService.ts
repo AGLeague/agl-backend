@@ -4,6 +4,7 @@ import { PartialPlayerNameHelper } from "./names";
 
 
 interface Players {
+	id: number;
 	name: string;
 	leagues: string[],
 	stats: {
@@ -26,6 +27,7 @@ class StatsSource {
 	private dbToResponse(player: Player): Players {
 		let placements = player.placements ?? []
 		return {
+			id: player.id,
 			name: player.displayName,
 			leagues: placements.map(l => l.leagueName),
 			stats: {

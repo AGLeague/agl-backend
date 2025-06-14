@@ -48,8 +48,8 @@ interface SheetMatch {
 
 function rowToMatch(row: Row): SheetMatch {
 	return {
-		winner: FullPlayerNameHelper.create(row.getColumnByHeader("Winner Name")),
-		loser: FullPlayerNameHelper.create(row.getColumnByHeader("Loser Name")),
+		winner: PartialPlayerNameHelper.create(row.getColumnByHeader("Winner Name")),
+		loser: PartialPlayerNameHelper.create(row.getColumnByHeader("Loser Name")),
 		timestamp: new Date(row.getColumnByHeader("Timestamp")),
 		result: row.getColumnByHeader("Result"),
 	}
@@ -311,13 +311,16 @@ class LeagueSheetReader implements LeagueReader {
 	private _logger: winston.Logger
 	private _sheetId: string
 	private _standingsRange: string
+	private _matchesRange: string
 	private static DEFAULT_STANDINGS_RANGE = "Standings!A5:10000"
+	private static DEFAULT_MATCH_RANGE = "Matches!A:Z"
 
-	constructor(sheets: sheets_v4.Sheets, logger: winston.Logger, sheetId: string, standingsRange: string | undefined) {
+	constructor(sheets: sheets_v4.Sheets, logger: winston.Logger, sheetId: string, standingsRange: string | undefined, matchesRange: string | undefined) {
 		this._sheets = sheets
 		this._logger = logger
 		this._sheetId = sheetId
 		this._standingsRange = standingsRange ?? LeagueSheetReader.DEFAULT_STANDINGS_RANGE
+		this._matchesRange = matchesRange ?? LeagueSheetReader.DEFAULT_MATCH_RANGE
 	}
 
 	async getStandings(): Promise<Standing[]> {
@@ -333,22 +336,47 @@ class LeagueSheetReader implements LeagueReader {
 		this._logger.info({ sheetId: this._sheetId, data: results.data.values })
 
 		let helper = new SheetDataHelper(results.data.values, { logger: this._logger.child({ service: "DataHelper" }) })
-		const rows = toArray(helper.generateRows())
-		return rows.map(rowToStanding)
+
+		let atEnd = false
+
+		const standings: Standing[] = []
+		for (let row of helper.generateRows()) {
+			const playerName = row.getOptionalColumnByHeader("PLAYER NAME")
+			this._logger?.info({ playerName })
+			if (playerName && playerName.toUpperCase() === "ENTROPY") {
+				this._logger?.info("Found entropy row")
+				break
+			}
+
+			if (!row.isEmpty())
+				standings.push(rowToStanding(row))
+		}
+		return standings
 	}
 
 	async getMatches(): Promise<SheetMatch[]> {
 		const results = await this._sheets.spreadsheets.values.get({
 			spreadsheetId: this._sheetId,
-			range: "Matches!A:Z"
+			range: this._matchesRange,
 		})
 
 		if (!results.data.values)
 			throw new Error("Failure getting Top8s")
 
 		let helper = new SheetDataHelper(results.data.values, { logger: this._logger.child({ service: "DataHelper" }) })
-		const rows = toArray(helper.generateRows())
-		return rows.map(rowToMatch)
+
+		let matches: SheetMatch[] = []
+		for (var row of helper) {
+			if (row.isEmpty())
+				continue
+
+			// Some sheets have hidden rows at the start.
+			if (row.getColumnByHeader("Winner Name") === '' && row.getColumnByHeader("Loser Name") === '')
+				continue
+
+			matches.push(rowToMatch(row))
+		}
+		return matches
 	}
 }
 
@@ -366,7 +394,7 @@ class SheetReaderFactory {
 		this._statsSheetId = statsSheetId
 	}
 
-	getLeagueReader(sheetId: string, leagueCode: string, leagueName: string, standingsRange: string | undefined): LeagueReader {
+	getLeagueReader(sheetId: string, leagueCode: string, leagueName: string, standingsRange: string | undefined, matchRange: string | undefined): LeagueReader {
 		let logger = this._logger
 		if (leagueName ?? leagueCode)
 			logger = logger.child({ "league": leagueName ?? leagueCode })
@@ -375,7 +403,7 @@ class SheetReaderFactory {
 			return new StatsSheetLeagueReader(leagueCode, this._getStatsSheetReader(logger), logger)
 
 		this._logger.info("getLeagueReader", { standingsRange })
-		return new LeagueSheetReader(this._sheets, logger, sheetId, standingsRange)
+		return new LeagueSheetReader(this._sheets, logger, sheetId, standingsRange, matchRange)
 	}
 
 	getStatsSheetReader() {
@@ -387,4 +415,3 @@ class SheetReaderFactory {
 }
 
 export { SheetReaderFactory, LeagueReader, Row }
-

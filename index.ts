@@ -11,6 +11,8 @@ import winston from "winston"
 import { SheetReaderFactory } from "./sheets/leagueSheet"
 import { adminRouter } from "./routes/admin"
 
+import fs from 'fs/promises'
+
 const logger = winston.createLogger({
 	level: 'info',
 	format: winston.format.json(),
@@ -50,7 +52,7 @@ const sheetReaderFactory = new SheetReaderFactory(API_KEY, logger.child({ servic
 
 app.use("/api/players", playerRoute(statsSource, logger.child({ route: 'players' })))
 app.use("/api/admin", adminRouter(sheetReaderFactory, model, logger.child({ route: 'admin' }), PASSWORD))
-app.use("/api/achievements", achievementRouter(statsSource))
+app.use("/api/achievements", achievementRouter(statsSource, model))
 
 app.get("/", (_: Request, res: Response) => {
 	res.send("A placeholder for something cool coming soon")
@@ -58,8 +60,29 @@ app.get("/", (_: Request, res: Response) => {
 
 const port = process.env.PORT || 8000
 
-model.initialize().then(() => {
+async function loadSqlViews() {
+	let files = await fs.readdir('./sql/')
+
+	for (let file of files) {
+		console.log(file)
+		let data = await fs.readFile('./sql/' + file, {encoding: 'utf-8'})
+
+		let statements = data.split(';')
+		for (let statement of statements) {
+			statement = statement.trim()
+			if (statement) {
+				let result = await sequelize.query(statement)
+				console.log(result)
+			}
+		}
+	}
+}
+
+
+model.initialize().then(async () => {
 	logger.info("Tables initialized")
+	await loadSqlViews()
+	logger.info("Views initialized")
 }).then(() => {
 	app.listen(port, () => {
 		logger.info(`App listening on port ${port}`)

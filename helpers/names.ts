@@ -7,7 +7,7 @@ interface NameHelper {
 }
 
 /**
- * A NameHelper to be used when we don't know if the arenaId will be 
+ * A NameHelper to be used when we don't know if the arenaId will be
  * included, and should not error if it is not.
 **/
 class PartialPlayerNameHelper implements NameHelper {
@@ -15,8 +15,11 @@ class PartialPlayerNameHelper implements NameHelper {
 	name: string
 	arenaId?: string
 	constructor(name: string, arenaId: string) {
-		this.name = name
-		this.arenaId = arenaId
+		this.name = name.trim()
+		if (arenaId)
+			this.arenaId = arenaId.trim()
+		else
+			this.arenaId = arenaId
 	}
 
 	get formattedName() {
@@ -35,7 +38,7 @@ class PartialPlayerNameHelper implements NameHelper {
 }
 
 /**
- * A NameHelper to be used when we expect the arenaId to be 
+ * A NameHelper to be used when we expect the arenaId to be
  * included, and should error if it is not.
 **/
 class FullPlayerNameHelper implements NameHelper {
@@ -43,8 +46,8 @@ class FullPlayerNameHelper implements NameHelper {
 	name: string
 	arenaId: string
 	constructor(name: string, arenaId: string) {
-		this.name = name
-		this.arenaId = arenaId
+		this.name = name.trim()
+		this.arenaId = arenaId.trim()
 	}
 
 	get formattedName() {
@@ -54,7 +57,7 @@ class FullPlayerNameHelper implements NameHelper {
 	static create(formattedName: string) {
 		const nameParts = formattedName.split(FullPlayerNameHelper.SPLITTER)
 		if (nameParts.length !== 2)
-			throw new InvalidFormatError(formattedName)
+			throw new InvalidFormatError("Expected full format, got " + formattedName)
 
 		const [playerName, arenaId] = nameParts
 

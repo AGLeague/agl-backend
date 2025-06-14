@@ -3,6 +3,9 @@ import winston from "winston"
 import { NoMatchedError, NotUniqueMatch } from "./exceptions";
 import { FullPlayerNameHelper, NameHelper } from "./helpers/names";
 
+
+const CURRENT_ACHIEVEMENT_VERSION = 0
+
 class Player extends Model<InferAttributes<Player>, InferCreationAttributes<Player>> {
 	declare id: CreationOptional<number>
 	declare displayName: string
@@ -24,6 +27,8 @@ class League extends Model<InferAttributes<League>, InferCreationAttributes<Leag
 	declare entropySheet: boolean | null
 	declare omwIncludesEntropy: boolean | null
 	declare standingsRange: string | null
+	declare matchesRange: string | null
+	declare achievementVersion: number
 	declare setLeagueEntries: HasManySetAssociationsMixin<LeagueEntry, number>
 }
 
@@ -51,6 +56,18 @@ class Alias extends Model<InferAttributes<Alias>, InferCreationAttributes<Alias>
 	declare arenaId: string
 	declare player?: NonAttribute<Player>
 	declare getPlayer: BelongsToGetAssociationMixin<Player>
+}
+
+interface Achievements {
+	playerId: CreationOptional<number>
+	progress: number | null
+	common:boolean
+	uncommon:boolean
+	rare:boolean
+	mythic:boolean
+	spg:boolean
+	name:string
+	collector:number
 }
 
 class DbModel {
@@ -130,7 +147,13 @@ class DbModel {
 				standingsRange: {
 					type: DataTypes.STRING,
 				},
-
+				matchesRange: {
+					type: DataTypes.STRING,
+				},
+				achievementVersion: {
+					type: DataTypes.INTEGER,
+					allowNull: false,
+				}
 			},
 			{
 				sequelize: this._db,
@@ -269,6 +292,8 @@ class DbModel {
 		noEntropySheet?: boolean | null,
 		omwIncludesEntropy?: boolean | null,
 		standingsRange?: string | null,
+		matchesRange?: string | null,
+		achievementVersion?: number
 	) {
 
 		return League.create({
@@ -280,6 +305,8 @@ class DbModel {
 			entropySheet: !noEntropySheet,
 			omwIncludesEntropy,
 			standingsRange,
+			matchesRange,
+			achievementVersion: achievementVersion ?? CURRENT_ACHIEVEMENT_VERSION,
 		})
 
 	}
@@ -303,7 +330,7 @@ class DbModel {
 	}
 
 
-	// TODO: findPlayer, getPlayer, and getPlayerIdByName can probably be combined better, since they are all doing mostly the same thing. 
+	// TODO: findPlayer, getPlayer, and getPlayerIdByName can probably be combined better, since they are all doing mostly the same thing.
 	public async findPlayer(nameHelper: NameHelper): Promise<Player | null> {
 		const foundAlias = await Alias.findAll({ where: { name: nameHelper.name, arenaId: nameHelper.arenaId }, include: Player })
 
@@ -343,9 +370,9 @@ class DbModel {
 		this._logger.info("Getting entry", { playerName, leagueName })
 
 		let result = await this._db.query(`
-SELECT 
+SELECT
 	DISTINCT(leaguePlacements.playerId)
-FROM  leaguePlacements 
+FROM  leaguePlacements
 INNER JOIN Players ON leaguePlacements.playerId = players.id
 INNER JOIN Aliases ON Aliases.playerId = players.id
 WHERE
@@ -375,6 +402,34 @@ WHERE
 
 	public createMatch(match: CreationAttributes<Match>) {
 		return Match.create(match, {})
+	}
+
+	public async getAchievements(playerId: number) {
+		const results = await this._db.query(
+			'SELECT * FROM vw_achievements WHERE playerId = ?',
+			{
+				bind: [playerId],
+				type: QueryTypes.SELECT,
+			}
+		)
+
+		let achievements: Achievements[] = []
+
+		for (let result of results) {
+			let anyResult = result as any
+			achievements.push( {
+				playerId: anyResult['playerId'],
+				progress: anyResult['progress'],
+				common:anyResult['common'],
+				uncommon:anyResult['uncommon'],
+				rare:anyResult['rare'],
+				mythic:anyResult['mythic'],
+				spg:anyResult['spg'],
+				name: anyResult['name'],
+				collector:anyResult['collector']
+			})
+		}
+		return achievements
 	}
 }
 

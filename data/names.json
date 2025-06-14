@@ -1,7 +1,38 @@
 [
   {
+    "preferredName": "Mike P",
+    "names": [
+      "Mike P"
+    ],
+    "arenaIds": [
+      "UnwieldyBiscuit#5820",
+      "UnwieldyBiscuit#26471"
+    ]
+  },
+  {
+    "preferredName": "Jaidin M",
+    "names": [
+      "Jaidin M"
+    ],
+    "arenaIds": [
+      "MnemonicDevice#38774",
+      "Mnemonic#38774"
+    ]
+  },
+  {
+    "preferredName": "Kowen S",
+    "names": [
+      "Kowen S"
+    ],
+    "arenaIds": [
+      "Zumas#77769",
+      "Zumas#?????"
+    ]
+  },
+  {
     "preferredName": "Mitch S",
     "names": [
+      "MItchel S",
       "Mitch S",
       "Mitchel S"
     ]
