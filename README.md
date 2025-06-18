@@ -16,13 +16,15 @@ PASSWORD={your api password}
 #### API_KEY
 To read from the google sheets apis, you will need to create a project and API key in [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
 
+The project will have 
+
 #### STATS_SHEET
 This is the stats sheet that serves as a starting point for reading the data needed to calculate the achievements.
 
 #### PASSWORD
-This is a password used to access the admin apis that do the initial data load. 
+This sets a password that will be used to access the admin apis, such as the initial data load. This password is only used to verify callers to the application, it is not an existing password to a different system.
 
-It's provided to the apis as a query parameter as a get request, to make it easier to get going. Once I've got the server more stable, this should be updated to read from a request header, instead of a query parameter.
+It's provided to the apis as a query parameter of get requests (see below), to make it easier to get going. Once I've got the server more stable, this should be updated to read from a request header, instead of a query parameter. Or removed once we have more stable authentication.
 
 ### Running the server
 
@@ -36,7 +38,7 @@ This repo also includes a Containerfile that can be used to build a docker or po
 
 ### Loading the data
 Once the server is running, an initial request can be made to have the server populate it's database with the data from the google sheets for a single league. 
-This request can be begun by navigating to <http://localhost:8000/api/admin/load/init/TDM?password={your_api_key}>
+This request can be begun by navigating to <http://localhost:8000/api/admin/load/init/TDM?password={PASSWORD}> in a browser.
 
 ## Data Model
 
@@ -47,9 +49,11 @@ Once the data import is complete, I plan to as many of the achievements as possi
 There will be other achievements that can not be determined just by looking at historical information. For instance, once a league is over, we can't tell who was in the top8 at the end of week 2. For these type of *Snapshot Achievements* we will need to keep track of when they are unlocked, and store that directly in the database. The view mentioned above should be able to read from the table these are stored in, so this difference won't impact retrieval.
 
 ### TODOs
-  - [ ] Finish initial data load
+  - [ ] Handle Dragon matches, so we can load NXT League.
+  - [ ] Verify Entropy is handled correctly accross all leagues.
   - [ ] Add migrations so future data won't be lost when the data schema changes
   - [ ] Add a backround task to re-scan the matches on a regular basis.
     - [ ] Look into google sheets web hooks, to automatically be notified when a match is completed
-  - [ ] Read load.json directly, so that the requests can be turned back to get (if wanted)
+  - [ ] Better authentication/User login. I think for our use case, sign in with Discord would make sense. 
+
 
