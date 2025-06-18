@@ -60,13 +60,13 @@ class Alias extends Model<InferAttributes<Alias>, InferCreationAttributes<Alias>
 interface Achievements {
 	playerId: CreationOptional<number>
 	progress: number | null
-	common:boolean
-	uncommon:boolean
-	rare:boolean
-	mythic:boolean
-	spg:boolean
-	name:string
-	collector:number
+	common: boolean
+	uncommon: boolean
+	rare: boolean
+	mythic: boolean
+	spg: boolean
+	name: string
+	collector: number
 }
 
 class DbModel {
@@ -241,6 +241,11 @@ class DbModel {
 		await this._db.sync()
 	}
 
+	public async getPlayerNames() {
+		const results = await Player.findAll({ attributes: ["displayName"] })
+		return results.map(player => player.displayName)
+	}
+
 	public async createPlayer(name: FullPlayerNameHelper, aliases: Generator<{ name: string, arenaId: string }>) {
 		const createdPlayer = await Player.create({ displayName: name.formattedName, name: name.name, arenaId: name.arenaId })
 
@@ -334,7 +339,7 @@ class DbModel {
 		const foundAlias = await Alias.findAll({ where: { name: nameHelper.name, arenaId: nameHelper.arenaId }, include: Player })
 
 		if (foundAlias.length === 1)
-			return foundAlias[0].getPlayer({include: 'placements'})
+			return foundAlias[0].getPlayer({ include: 'placements' })
 		else if (foundAlias.length > 1)
 			throw new NotUniqueMatch("Found multiple matching alias for " + nameHelper.formattedName)
 		return null
@@ -360,7 +365,14 @@ class DbModel {
 	public async getPlayersPage(page: number, size: number): Promise<{ players: Player[], totalCount: number }> {
 		// Need to use base 0, instead of 1
 		page = page - 1
-		let dbResult = await Player.findAndCountAll({ limit: size, offset: page * size, order: [["winrate", "DESC"]], include: 'placements' })
+		let dbResult = await Player.findAndCountAll({
+			distinct: true,
+			limit: size,
+			offset: page * size,
+			order: [["winrate", "DESC"]],
+			include: 'placements'
+		}
+		)
 
 		return { players: dbResult.rows, totalCount: dbResult.count }
 	}
@@ -416,16 +428,16 @@ WHERE
 
 		for (let result of results) {
 			let anyResult = result as any
-			achievements.push( {
+			achievements.push({
 				playerId: anyResult['playerId'],
 				progress: anyResult['progress'],
-				common:anyResult['common'],
-				uncommon:anyResult['uncommon'],
-				rare:anyResult['rare'],
-				mythic:anyResult['mythic'],
-				spg:anyResult['spg'],
+				common: anyResult['common'],
+				uncommon: anyResult['uncommon'],
+				rare: anyResult['rare'],
+				mythic: anyResult['mythic'],
+				spg: anyResult['spg'],
 				name: anyResult['name'],
-				collector:anyResult['collector']
+				collector: anyResult['collector']
 			})
 		}
 		return achievements
@@ -433,8 +445,8 @@ WHERE
 
 	public async calculateWinRate(playerId: number): Promise<number> {
 		const query = 'SELECT \n' +
-'(SELECT count(*) AS Wins FROM matches WHERE winnerId = $1) as Wins,\n' +
-'(SELECT Count(*) AS Loses FROM Matches where opponentId = $1) as Loses'
+			'(SELECT count(*) AS Wins FROM matches WHERE winnerId = $1) as Wins,\n' +
+			'(SELECT Count(*) AS Loses FROM Matches where opponentId = $1) as Loses'
 
 		const results = await this._db.query(query,
 			{

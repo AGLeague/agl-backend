@@ -26,7 +26,7 @@ class StatsSource {
 
 	private dbToResponse = async (player: Player): Promise<Players> => {
 		let placements = player.placements ?? []
-		let top8s = placements.filter( placements  => placements.rank <= 8).length
+		let top8s = placements.filter(placements => placements.rank <= 8).length
 		let winRate = await this._model.calculateWinRate(player.id)
 
 		return {
@@ -44,9 +44,8 @@ class StatsSource {
 	public async getPage(page: number, size: number): Promise<{ players: Players[], totalCount: number }> {
 
 		const response = await this._model.getPlayersPage(page, size)
-		this._logger.info(response.players[0])
 
-		this._logger.info("Get Page has " + response.players.length + " rows")
+		this._logger.info("Got Page", { pageLength: response.players.length, totalCount: response.totalCount })
 
 		const players = await Promise.all(response.players.map(this.dbToResponse))
 
@@ -61,6 +60,11 @@ class StatsSource {
 			return
 
 		return this.dbToResponse(player)
+	}
+
+	public async getNames() {
+		const names: string[] = await this._model.getPlayerNames()
+		return names
 	}
 }
 

@@ -76,6 +76,16 @@ function playerRouter(statsSource: StatsSource, logger: winston.Logger, model: D
 		}
 	})
 
+	router.get("/names", async function(req, res) {
+		logger.debug("Get all players")
+		let players = await statsSource.getNames()
+
+		res.status(200).json({
+			links: {},
+			data: players,
+		})
+	})
+
 	router.get("/:playerId", async function(req, res) {
 		logger.debug("Get for: " + req.params.playerId)
 		let player = await statsSource.getPlayer(req.params.playerId)
