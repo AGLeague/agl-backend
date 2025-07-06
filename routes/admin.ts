@@ -143,6 +143,7 @@ function adminRouter(
 			try {
 				await loadLeague(leagueCode)
 			} catch (e) {
+				logger.error("Error loading leagues.", { error: e, leagueCode })
 				let errResponse = { error: e, leagueCode }
 				res.status(400).json(errResponse)
 				return
@@ -157,6 +158,7 @@ function adminRouter(
 		try {
 			await loadLeague(leagueCode)
 		} catch (e) {
+			logger.error("Error loading leagues.", { error: e, leagueCode })
 			let errResponse = { error: e, leagueCode }
 			res.status(400).json(errResponse)
 			return
@@ -211,10 +213,18 @@ function adminRouter(
 					league: leagueCode,
 				}
 				logger.warn("No loser, continuing", error)
+
 				// There are some users that show up in the matches, but don't seem to show up in teh Player List.
 				// Maybe reading from the league sheets instead of the stats sheet will fix this?
-				throw new Error("I don't think this should happen")
-				// continue
+				const knownCases = [
+					"Richard H", // KLR, only has ENTROPY Loses
+					"Robert C", // KLR, only has ENTROPY Loses
+				]
+
+				if (knownCases.indexOf(match.loser.name) < 0) {
+					logger.warn("Loser not in league", {name: match.loser.name})
+				}
+				continue
 			}
 			logger.warn("verified winner/loser")
 			const matchModel = {

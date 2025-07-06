@@ -275,11 +275,13 @@ class StatsSheetReader {
 
 class StatsSheetLeagueReader implements LeagueReader {
 	private _leagueCode: string
+	private _leagueName: string
 	private _statsReader: StatsSheetReader
 	private _logger: winston.Logger
 
-	constructor(leagueCode: string, statsReader: StatsSheetReader, logger: winston.Logger) {
+	constructor(leagueCode: string, leagueName: string, statsReader: StatsSheetReader, logger: winston.Logger) {
 		this._leagueCode = leagueCode
+		this._leagueName = leagueName
 		this._statsReader = statsReader
 		this._logger = logger
 	}
@@ -287,7 +289,9 @@ class StatsSheetLeagueReader implements LeagueReader {
 	async getStandings(): Promise<Standing[]> {
 		this._logger.info("Getting Standings B")
 		const playersByLeague = await this._statsReader.getPlayersByLeague()
-		const players = playersByLeague.get(this._leagueCode) ?? []
+		const players = playersByLeague.get(this._leagueName) ??
+			playersByLeague.get(this._leagueCode) ?? []
+
 		const standings: Standing[] = []
 		let rank = 1
 		for (let player of players) {
@@ -399,11 +403,14 @@ class SheetReaderFactory {
 		if (leagueName ?? leagueCode)
 			logger = logger.child({ "league": leagueName ?? leagueCode })
 
-		if (!sheetId)
-			return new StatsSheetLeagueReader(leagueCode, this._getStatsSheetReader(logger), logger)
-
-		this._logger.info("getLeagueReader", { standingsRange })
-		return new LeagueSheetReader(this._sheets, logger, sheetId, standingsRange, matchRange)
+		// if (!sheetId) {
+		if (true) {
+			this._logger.info("getting stats sheet.", { standingsRange })
+			return new StatsSheetLeagueReader(leagueCode, leagueName, this._getStatsSheetReader(logger), logger)
+		} else {
+			this._logger.info("getLeagueReader", { standingsRange })
+			return new LeagueSheetReader(this._sheets, logger, sheetId, standingsRange, matchRange)
+		}
 	}
 
 	getStatsSheetReader() {

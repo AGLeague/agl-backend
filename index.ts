@@ -12,12 +12,42 @@ import { adminRouter } from "./routes/admin"
 
 import fs from 'fs/promises'
 
+const enumerateErrorFormat = winston.format(info => {
+  if (info.message instanceof Error) {
+    info.message = Object.assign({
+      message: info.message.message,
+      stack: info.message.stack,
+    }, info.message);
+  }
+  if (info.error instanceof Error) {
+    info.error = Object.assign({
+      message: info.error.message,
+      stack: info.error.stack,
+    }, info.error);
+  }
+  if (info instanceof Error) {
+    return Object.assign({
+      message: info.message,
+      stack: info.stack,
+    }, info);
+  }
+  return info;
+});
+
 const logger = winston.createLogger({
 	level: 'info',
-	format: winston.format.json(),
+	format: winston.format.combine(
+		enumerateErrorFormat(),
+		winston.format.json(),
+	),
 	defaultMeta: { service: 'app' },
 	transports: [
-		new winston.transports.Console()
+		new winston.transports.Console({
+			format: winston.format.combine(
+				winston.format.colorize(),
+				enumerateErrorFormat(),
+			),
+		}),
 	],
 })
 
