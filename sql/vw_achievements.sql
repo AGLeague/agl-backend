@@ -5,11 +5,11 @@ SELECT * FROM vw_survivor
 UNION ALL
 SELECT * FROM vw_sniper_shot
 UNION ALL
-SELECT * FROM vw_phoenix_rising;
+SELECT * FROM vw_phoenix_rising
 UNION ALL
-SELECT * FROM vw_trial_by_combat;
+SELECT * FROM vw_trial_by_combat
 UNION ALL
-SELECT * FROM vw_breaker_of_blades;
+SELECT * FROM vw_breaker_of_blades
 UNION ALL
 SELECT * FROM vw_seasoned_executioner
 UNION ALL
