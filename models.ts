@@ -1,4 +1,4 @@
-import { BelongsToGetAssociationMixin, CreationAttributes, CreationOptional, DataTypes, ForeignKey, HasManyGetAssociationsMixin, HasManySetAssociationsMixin, InferAttributes, InferCreationAttributes, Model, NonAttribute, QueryTypes, Sequelize } from "sequelize";
+import { BelongsToGetAssociationMixin, col, CreationAttributes, CreationOptional, DataTypes, fn, ForeignKey, HasManyAddAssociationsMixin, HasManyGetAssociationsMixin, HasManySetAssociationsMixin, InferAttributes, InferCreationAttributes, Model, NonAttribute, QueryTypes, Sequelize, where } from "sequelize";
 import winston from "winston"
 import { NoMatchedError, NotUniqueMatch } from "./exceptions";
 import { FullPlayerNameHelper, NameHelper } from "./helpers/names";
@@ -14,6 +14,9 @@ class Player extends Model<InferAttributes<Player>, InferCreationAttributes<Play
 	declare top8s: CreationOptional<number>
 	declare placements?: NonAttribute<LeagueEntry[]>
 	declare getPlacements: HasManyGetAssociationsMixin<LeagueEntry>
+
+	declare getAliases: HasManyGetAssociationsMixin<Alias>
+	declare addAlias: HasManyAddAssociationsMixin<Alias, number>
 }
 
 class League extends Model<InferAttributes<League>, InferCreationAttributes<League>> {
@@ -216,7 +219,6 @@ class DbModel {
 			}
 		)
 
-
 		Player.hasMany(LeagueEntry, { as: 'placements', onDelete: 'CASCADE' })
 		LeagueEntry.belongsTo(Player)
 
@@ -255,6 +257,10 @@ class DbModel {
 		}
 
 		return createdPlayer
+	}
+
+	public async addAlias(player: Player, alias: FullPlayerNameHelper) {
+		await Alias.create({ playerId: player.id, name: alias.name, arenaId: alias.arenaId })
 	}
 
 	public async updatePlayersWinRate(winRates: { name: NameHelper, winRate: number }[]) {
@@ -312,7 +318,6 @@ class DbModel {
 			matchesRange,
 			achievementVersion: achievementVersion ?? CURRENT_ACHIEVEMENT_VERSION,
 		})
-
 	}
 
 	public async upsertLeagueEntry(playerId: number, leagueCode: string, rank: number) {
@@ -333,14 +338,47 @@ class DbModel {
 		return placement
 	}
 
+	public async tryFindByArenaId(arenaId: string): Promise<Player | null> {
+		const foundAlias = await Player.findAll({
+			where:
+				where(fn('LOWER', col('Aliases.ArenaId')), '=', arenaId.toLowerCase(),)
+			,
+			include: [Alias, 'placements']
+		})
+
+		if (foundAlias.length === 1)
+			return foundAlias[0]
+		else if (foundAlias.length > 1) {
+			let firstId = foundAlias[0].id
+
+			for (var alias of foundAlias) {
+				// We may have found the same alias multiple times. if that's not the case, then it's an error.
+				if (alias.id !== firstId)
+					throw new NotUniqueMatch("Found multiple matching alias for " + arenaId)
+			}
+			// If they all have the same Id, they're all the same.
+			return foundAlias[0]
+		}
+		return null
+	}
+
 
 	// TODO: findPlayer, getPlayer, and getPlayerIdByName can probably be combined better, since they are all doing mostly the same thing.
 	public async findPlayer(nameHelper: NameHelper): Promise<Player | null> {
-		const foundAlias = await Alias.findAll({ where: { name: nameHelper.name, arenaId: nameHelper.arenaId }, include: Player })
+		let foundAlias: Player | null = null
+		if (nameHelper.arenaId) {
+			foundAlias = await this.tryFindByArenaId(nameHelper.arenaId)
 
-		if (foundAlias.length === 1)
-			return foundAlias[0].getPlayer({ include: 'placements' })
-		else if (foundAlias.length > 1)
+		}
+
+		if (foundAlias)
+			return foundAlias
+
+		let foundAliases = await Alias.findAll({ where: { name: nameHelper.name, arenaId: nameHelper.arenaId }, include: Player })
+
+		if (foundAliases.length === 1)
+			return foundAliases[0].getPlayer({ include: 'placements' })
+		else if (foundAliases.length > 1)
 			throw new NotUniqueMatch("Found multiple matching alias for " + nameHelper.formattedName)
 		return null
 	}
@@ -378,7 +416,6 @@ class DbModel {
 	}
 
 	public async getPlayerIdByName(playerName: string, leagueName: string): Promise<number | null> {
-		this._logger.info("Getting entry", { playerName, leagueName })
 
 		let result = await this._db.query(`
 SELECT
@@ -395,13 +432,8 @@ WHERE
 			}
 		)
 
-		this._logger.info("Finished Query", { playerName, leagueName })
-
 		if (result.length > 1)
 			throw new NotUniqueMatch(playerName + "," + leagueName)
-
-		this._logger.info("Validated Result", { playerName, leagueName })
-		this._logger.warn("Got a result", { result })
 
 		if (result.length == 0)
 			return null
@@ -413,6 +445,16 @@ WHERE
 
 	public createMatch(match: CreationAttributes<Match>) {
 		return Match.create(match, {})
+	}
+
+	public upsertLeagueMatches(matches: Array<CreationAttributes<Match>>, leagueCode: string) {
+		Match.destroy({
+			where: {
+				leagueName: leagueCode
+			}
+		})
+
+		return Match.bulkCreate(matches)
 	}
 
 	public async getAchievements(playerId: number) {
@@ -464,6 +506,6 @@ WHERE
 	}
 }
 
-export { Player, Match, LeagueEntry, League }
+export { Player, Match, LeagueEntry, League, Alias }
 
 export default DbModel

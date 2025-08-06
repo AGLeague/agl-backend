@@ -1,12 +1,12 @@
 import { Router, json } from "express";
-import DbModel from "../models";
+import DbModel, { Alias, Match } from "../models";
 import { SheetReaderFactory } from "../sheets/leagueSheet";
 import winston from "winston"
 
 import aliasData from "../data/names.json"
 import leagueData from "../data/leagues.json"
 import { NoMatchedError, NotUniqueMatch } from "../exceptions";
-import { UniqueConstraintError } from "sequelize";
+import { CreationAttributes, Optional, UniqueConstraintError } from "sequelize";
 import { FullPlayerNameHelper, NameHelper } from "../helpers/names";
 
 const CURRENT_ACHIEVEMENT_VERSION = 0
@@ -91,8 +91,15 @@ function adminRouter(
 		if (!player) {
 			let alias = findMatchingAlias(aliases, name)
 			player = await db.createPlayer(name, getAliasPairs(alias, name.arenaId))
+		} else {
+			let aliases = await player.getAliases()
+			for (let playerAlias of aliases) {
+				if (playerAlias.name !== name.name) {
+					await db.addAlias(player, name)
+				}
+			}
 		}
-		logger.info("Creating League Entry", { playerId: player.id, rank, code, player, name: name.formattedName })
+
 		await db.upsertLeagueEntry(player.id, code, rank)
 	}
 
@@ -181,15 +188,25 @@ function adminRouter(
 
 		for (let standing of standings) {
 			// TODO: Exclude rank if league is in progress.
-			await createLeagueEntry(aliasData, standing.player, standing.rank, leagueCode)
+			try {
+				await createLeagueEntry(aliasData, standing.player, standing.rank, leagueCode)
+			} catch(e) {
+				logger.error(e)
+			}
 		}
 		logger.info("Created standings. starting Matches")
 
+		let matches: Array<CreationAttributes<Match>> = []
+
+		let playerCache = new Map<string, number>();
+
 		for (let match of await leagueReader.getMatches()) {
-			logger.info("Got Match")
 			let winnerId: number | null;
 			if (match.winner.name.toUpperCase() === "ENTROPY")
 				winnerId = null
+			else if (match.winner.arenaId && playerCache.has(match.winner.arenaId.toLowerCase())) {
+				winnerId = playerCache.get(match.winner.arenaId.toLowerCase()) || null
+			}
 			else {
 				winnerId = await db.newGetPlayer(match.winner, leagueCode)
 
@@ -204,6 +221,9 @@ function adminRouter(
 				}
 			}
 			const loserId = await db.newGetPlayer(match.loser, leagueCode)
+			if (match.loser.arenaId && playerCache.has(match.loser.arenaId.toLowerCase())) {
+				winnerId = playerCache.get(match.loser.arenaId.toLowerCase()) || null
+			}
 			if (!loserId) {
 				let error = {
 					error: "Could not find loser",
@@ -213,22 +233,19 @@ function adminRouter(
 				logger.warn("No loser, continuing", error)
 				// There are some users that show up in the matches, but don't seem to show up in teh Player List.
 				// Maybe reading from the league sheets instead of the stats sheet will fix this?
-				throw new Error("I don't think this should happen")
-				// continue
+				// throw new Error("I don't think this should happen")
+				continue
 			}
-			logger.warn("verified winner/loser")
-			const matchModel = {
+			matches.push({
 				// These should all be the same between winner and loser.
 				leagueName: leagueCode,
 				timestamp: match.timestamp,
 				matchScore: match.result,
 				winnerId: winnerId,
 				opponentId: loserId,
-			}
-			logger.warn("constructed match")
-			await db.createMatch(matchModel)
-			logger.warn("saved match")
+			})
 		}
+		await db.upsertLeagueMatches(matches, leagueCode)
 	}
 
 	return router

@@ -80,7 +80,6 @@ async function loadSqlViews() {
 	}
 }
 
-
 model.initialize().then(async () => {
 	logger.info("Tables initialized")
 	await loadSqlViews()

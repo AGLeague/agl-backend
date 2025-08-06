@@ -1229,5 +1229,27 @@
         10
       ]
     ]
+  },
+  {
+    "code": "FIN",
+    "standingsRange": "Standings!A4:10000",
+    "year": 2025,
+    "docId": "14NyZfzvTd-21I_7rCpAPZHb13uwz2nfPmutRLmhqpwU",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [ ]
+  },
+  {
+    "code": "EOE",
+    "standingsRange": "Standings!A4:10000",
+    "year": 2025,
+    "docId": "1sOdt4emKlF0snznViq27edDan1muz6k36PKpet0TlmU",
+    "deathAtLoss": 11,
+    "omwIncludesEntropy": false,
+    "mainTourneyPrizes": [],
+    "megadraftPrizes": [],
+    "finalPrizes": [ ]
   }
 ]
