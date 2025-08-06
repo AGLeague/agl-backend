@@ -1,6 +1,6 @@
 DROP VIEW IF EXISTS vw_match_with_records;
 
-CREATE vw_match_with_records AS
+CREATE VIEW vw_match_with_records AS
 WITH match_events AS (SELECT
 	*,
 	WinnerId as PlayerId,
