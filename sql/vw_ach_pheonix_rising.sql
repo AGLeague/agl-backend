@@ -16,8 +16,8 @@ FROM (
 		winnerId as playerId,
 		leagueName,
 		count(*) as eliminationWins
-	FROM Matches
+	FROM vw_match_with_records
 	INNER JOIN leagues ON vw_match_with_records.leagueName = leagues.code
-	WHERE WinnerLoses = 10 AND leagueName.achievementVersion >= 1
+	WHERE WinnerLosses = 10 AND leagues.achievementVersion >= 1
 	GROUP BY winnerId, leagueName
 ) GROUP BY playerId

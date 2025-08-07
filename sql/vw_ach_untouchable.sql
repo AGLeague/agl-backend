@@ -3,11 +3,12 @@ DROP VIEW IF EXISTS vw_untouchable;
 CREATE VIEW vw_untouchable AS
 SELECT
 	WinnerId as playerId,
+	count(*) as progress,
 	0 as common,
 	0 as uncommon,
 	0 as rare,
 	0 as mythic,
-	count(*) >= 7 as spg,
+	count(*) >= 1 as spg,
 	'Flawless Execution' as name,
 	1 as collector
 FROM
