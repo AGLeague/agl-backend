@@ -19,8 +19,18 @@ SELECT
     w.cumulativeWins AS winnerWins,
     w.cumulativeLosses AS winnerLosses,
     o.cumulativeWins AS opponentWins,
-    o.cumulativeLosses AS opponentLosses
+    o.cumulativeLosses AS opponentLosses,
+	l.achievementVersion,
+	(CASE
+		WHEN l.leagueStart IS NULL THEN NULL
+		WHEN m.timestamp > date(l.leagueStart, '+5 week') THEN 6
+		WHEN m.timestamp > date(l.leagueStart, '+4 week') THEN 5
+		WHEN m.timestamp > date(l.leagueStart, '+3 week') THEN 4
+		WHEN m.timestamp > date(l.leagueStart, '+2 week') THEN 3
+		WHEN m.timestamp > date(l.leagueStart, '+1 week') THEN 2
+		ELSE 1 END) AS 'Week'
 FROM matches m
+INNER JOIN leagues l ON m.leagueName = l.code
 JOIN (
     SELECT *
     FROM (

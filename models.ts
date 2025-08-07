@@ -30,6 +30,7 @@ class League extends Model<InferAttributes<League>, InferCreationAttributes<Leag
 	declare omwIncludesEntropy: boolean | null
 	declare standingsRange: string | null
 	declare matchesRange: string | null
+	declare leagueStart: CreationOptional<Date | null>
 	declare achievementVersion: number
 	declare setLeagueEntries: HasManySetAssociationsMixin<LeagueEntry, number>
 }
@@ -155,13 +156,17 @@ class DbModel {
 				achievementVersion: {
 					type: DataTypes.INTEGER,
 					allowNull: false,
-				}
+				},
+				leagueStart: {
+					type: DataTypes.DATE,
+				},
 			},
 			{
 				sequelize: this._db,
 				modelName: 'league',
 			},
 		)
+
 
 		LeagueEntry.init(
 			{
