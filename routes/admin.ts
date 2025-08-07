@@ -220,9 +220,11 @@ function adminRouter(
 					throw new NoMatchedError("Could not find winner")
 				}
 			}
-			const loserId = await db.newGetPlayer(match.loser, leagueCode)
+			let loserId: number | null;
 			if (match.loser.arenaId && playerCache.has(match.loser.arenaId.toLowerCase())) {
-				winnerId = playerCache.get(match.loser.arenaId.toLowerCase()) || null
+				loserId = playerCache.get(match.loser.arenaId.toLowerCase()) || null
+			} else {
+				loserId = await db.newGetPlayer(match.loser, leagueCode)
 			}
 			if (!loserId) {
 				let error = {
