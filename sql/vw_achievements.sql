@@ -1,8 +1,8 @@
 DROP VIEW IF EXISTS vw_achievements;
 
 CREATE VIEW vw_achievements AS
-SELECT * FROM vw_flawless_execution
-UNION ALL
+-- SELECT * FROM vw_flawless_execution
+-- UNION ALL
 SELECT * FROM vw_endgame_runner
 UNION ALL
 SELECT * FROM vw_survivor
@@ -23,8 +23,8 @@ SELECT * FROM vw_league_loyalist
 UNION ALL
 SELECT * FROM vw_centurion
 UNION ALL
-SELECT * FROM vw_untouchable
-UNION ALL
+-- SELECT * FROM vw_untouchable
+-- UNION ALL
 SELECT * FROM vw_launch_sequence
 UNION ALL
 SELECT * FROM vw_early_overlord;
