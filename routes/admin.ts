@@ -248,6 +248,7 @@ function adminRouter(
 			})
 		}
 		await db.upsertLeagueMatches(matches, leagueCode)
+		logger.info("Saved Matches")
 	}
 
 	return router
