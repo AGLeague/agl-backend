@@ -10,7 +10,7 @@ playerId,
 	0 as mythic,
 	losses <= 2 as spg,
 	'Early Overlord' as name,
-	206 as collector FROM
+	207 as collector FROM
 (
 SELECT matches.opponentId as playerId, count(*) as Losses FROM
 (SELECT

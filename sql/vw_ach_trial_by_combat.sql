@@ -9,7 +9,7 @@ SELECT
 	max(eliminationWins) >= 3 as rare,
 	max(eliminationWins) >= 4 as mythic,
 	max(eliminationWins) >= 5 as spg,
-	'Trial By Combat' as name,
+	'Trial by Combat' as name,
 	8 as collector
 FROM (
 	SELECT
