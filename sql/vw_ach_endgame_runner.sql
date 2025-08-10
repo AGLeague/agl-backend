@@ -17,7 +17,7 @@ FROM
 	winnerId as playerId,
 	leagueName
 FROM vw_match_with_records
-WHERE Week = 6
+WHERE Week = 6 AND AchievementVersion >= 1
 UNION ALL
 SELECT
 	opponentId as playerId,
